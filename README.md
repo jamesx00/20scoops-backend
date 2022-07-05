@@ -7,7 +7,7 @@ This is a simple NestJS web application where clients can get, create, update, a
 - [x] Able to get single and multiple users, create, update, and delete users. All requests must be accompanied with an Authorization header with the value "20scoop" with the exception of GET requests.
 - [x] Checking the authorization header value must be done with middleware.
 - [x] Soft delete is implemented.
-- Provided user's data must be validation (with yup).
+- [x] Provided user's data must be validation (with yup).
 
 ## Tools suggested
 
