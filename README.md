@@ -4,17 +4,17 @@ This is a simple NestJS web application where clients can get, create, update, a
 
 ## Requirements
 
-- Able to get single and multiple users, create, update, and delete users. All requests must be accompanied with an Authorization header with the value "20scoop" with the exception of GET requests.
-- Checking the authorization header value must be done with middleware.
-- Soft delete is implemented.
+- [x] Able to get single and multiple users, create, update, and delete users. All requests must be accompanied with an Authorization header with the value "20scoop" with the exception of GET requests.
+- [x] Checking the authorization header value must be done with middleware.
+- [x] Soft delete is implemented.
 - Provided user's data must be validation (with yup).
 
 ## Tools suggested
 
-- TypeScript
-- NestJS framework
-- MongoDB
-- Docker & Docker compose
+- [x] TypeScript
+- [x] NestJS framework
+- [x] MongoDB
+- [x] Docker & Docker compose
 
 ## Resources
 
@@ -27,7 +27,8 @@ This is a simple NestJS web application where clients can get, create, update, a
 - Create a working environment with Docker and Docker Compose.
 - Build User schema.
 - Create a User module with CRUD controllers and services.
-- Write tests for user module
+- Implement authorization middleware.
+- Write tests for user module.
 
 ## Getting started
 
@@ -35,4 +36,10 @@ Run below command to start the development server
 
 ```shell
 docker-compose up [-d]
+```
+
+To stop the development server, run
+
+```shell
+docker-compose down [-v] # Add -v to remove volumes attached to containers
 ```
