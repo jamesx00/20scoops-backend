@@ -40,7 +40,7 @@ User schema _\*required_
 
 ## Action plans
 
-- [ ] Create a working environment with Docker and Docker Compose.
+- [x] Create a working environment with Docker and Docker Compose.
 - [ ] Build User schema.
 - [ ] Create a User module with CRUD controllers and services.
 - [ ] Write tests for user module
