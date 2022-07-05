@@ -310,6 +310,16 @@ describe('AppController (e2e)', () => {
       .expect(200);
   });
 
+  it('/DELETE users:identificationNumber with valid Authorization header and non-existing user', () => {
+    return request(app.getHttpServer())
+      .delete('/users/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
   it('/DELETE users:identificationNumber with valid Authorization header and deleted user', () => {
     const user = userModel({
       identificationNumber: '0001',
