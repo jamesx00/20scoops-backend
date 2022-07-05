@@ -261,6 +261,25 @@ describe('AppController (e2e)', () => {
       .expect(400);
   });
 
+  it('/POST users with valid Authorization header and strip attribute delete', () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({
+        identificationNumber: '0001',
+        firstName: 'name',
+        lastName: 'lastname',
+        deleted: true,
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(
+        (response) =>
+          response.body.deleted == false,
+      );
+  });
+
   it('/PATCH users:identificationNumber without Authorization header', () => {
     return request(app.getHttpServer())
       .patch('/users/0001')
