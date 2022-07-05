@@ -16,12 +16,6 @@ This is a simple NestJS web application where clients can get, create, update, a
 - [x] MongoDB
 - [x] Docker & Docker compose
 
-## Resources
-
-- [TypeScript Basic Syntax](https://www.tutorialspoint.com/typescript/typescript_basic_syntax.htm)
-- [NestJS Documentation](https://docs.nestjs.com/)
-- [NestJS Course for Beginners](https://www.youtube.com/watch?v=GHTA143_b-s)
-
 ## Action plans
 
 - Create a working environment with Docker and Docker Compose.
@@ -43,3 +37,9 @@ To stop the development server, run
 ```shell
 docker-compose down [-v] # Add -v to remove volumes attached to containers
 ```
+
+## Resources
+
+- [TypeScript Basic Syntax](https://www.tutorialspoint.com/typescript/typescript_basic_syntax.htm)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [NestJS Course for Beginners](https://www.youtube.com/watch?v=GHTA143_b-s)
