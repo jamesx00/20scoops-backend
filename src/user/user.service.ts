@@ -18,4 +18,11 @@ export class UserService {
     const newUser = new this.userModel(dto);
     return newUser.save();
   }
+
+  getAllUsers() {
+    const allUsers = this.userModel
+      .find({ deleted: false })
+      .exec();
+    return allUsers;
+  }
 }
