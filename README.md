@@ -59,3 +59,9 @@ docker-compose up [-d]
 
 `yarn add -D prisma` adds the prisma cli for development
 `yarn add @prisma/client` adds the prisma client
+
+After schema change, run below command to update prisma clients with the updated schema
+
+```shell
+npx prisma generate
+```
