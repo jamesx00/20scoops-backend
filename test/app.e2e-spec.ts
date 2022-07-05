@@ -53,7 +53,7 @@ describe('AppController (e2e)', () => {
       .expect(200);
   });
 
-  it('/GET users:identificationNumber without Authorization header', () => {
+  it('/GET users:identificationNumber', () => {
     const user = userModel({
       identificationNumber: '0001',
       firstName: 'Name',
@@ -64,6 +64,26 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/users/0001')
       .expect(200);
+  });
+
+  it('/GET users:identificationNumber with non-existing user', () => {
+    return request(app.getHttpServer())
+      .get('/users/00XX')
+      .expect(404);
+  });
+
+  it('/GET users:identificationNumber with deleted user', () => {
+    const identificationNumber = '0001';
+    const user = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'LastName',
+      deleted: true,
+    });
+    user.save();
+    return request(app.getHttpServer())
+      .get(`/users/${identificationNumber}`)
+      .expect(404);
   });
 
   it('/POST users without Authorization header', () => {
