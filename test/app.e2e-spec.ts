@@ -296,6 +296,105 @@ describe('AppController (e2e)', () => {
       .expect(403);
   });
 
+  it('/PATCH users:identificationNumber with valid Authorization header and valid value', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+
+    newUser.save();
+
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .send({
+        firstName: 'New First Name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(200);
+  });
+
+  it('/PATCH users:identificationNumber with valid Authorization header and invalid value', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+
+    newUser.save();
+
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .send({
+        firstName: '',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/PATCH users:identificationNumber with valid Authorization header and identification number as data', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+
+    newUser.save();
+
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .send({
+        identificationNumber: '0002',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(
+        (response) =>
+          response.body.identificationNumber ==
+          '0001',
+      );
+  });
+
+  it('/PATCH users:identificationNumber with valid Authorization header and deleted as data', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+
+    newUser.save();
+
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .send({
+        deleted: true,
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(
+        (response) =>
+          response.body.deleted == false,
+      );
+  });
+
   it('/DELETE users:identificationNumber without Authorization header', () => {
     return request(app.getHttpServer())
       .delete('/users/0001')
