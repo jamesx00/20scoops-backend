@@ -50,7 +50,39 @@ describe('AppController (e2e)', () => {
   it('/GET users', () => {
     return request(app.getHttpServer())
       .get('/users')
-      .expect(200);
+      .expect(200)
+      .expect((response) => response.body == []);
+  });
+
+  it('/GET users with existing users', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect(
+        (response) => response.body.length > 0,
+      );
+  });
+
+  it('/GET users with deleted users', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+      deleted: true,
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect((response) => response.body == []);
   });
 
   it('/GET users:identificationNumber', () => {
