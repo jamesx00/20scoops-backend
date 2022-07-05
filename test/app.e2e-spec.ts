@@ -592,6 +592,67 @@ describe('AppController (e2e)', () => {
       .expect(404);
   });
 
+  it('/POST users/restore/:identificationNumber without Authorization header', () => {
+    return request(app.getHttpServer())
+      .post('/users/restore/0001')
+      .expect(403);
+  });
+
+  it('/POST users/restore/:identificationNumber with invalid Authorization header', () => {
+    return request(app.getHttpServer())
+      .post('/users/restore/0001')
+      .set(
+        'Authorization',
+        INVALID_AUTHORIZATION_VALUE,
+      )
+      .expect(403);
+  });
+
+  it('/POST users/restore/:identificationNumber with valid Authorization header and valid user', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+      deleted: true,
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .post('/users/restore/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(200);
+  });
+
+  it('/POST users/restore/:identificationNumber with valid Authorization header and non-existing user', () => {
+    return request(app.getHttpServer())
+      .post('/users/restore/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
+  it('/POST users/restore/:identificationNumber with valid Authorization header and live user', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .post('/users/restore/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
   afterEach(async () => {
     await app.close();
   });
