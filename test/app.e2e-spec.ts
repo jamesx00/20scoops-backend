@@ -531,6 +531,35 @@ describe('AppController (e2e)', () => {
       );
   });
 
+  it('/PATCH users:identificationNumber check dateUpdated change', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+
+    newUser.save();
+    const originalUpdatedTime =
+      newUser.dateUpdated;
+
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .send({
+        firstName: 'FirstName',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(
+        (response) =>
+          response.body.dateUpdated !=
+          originalUpdatedTime,
+      );
+  });
+
   it('/DELETE users:identificationNumber without Authorization header', () => {
     return request(app.getHttpServer())
       .delete('/users/0001')
