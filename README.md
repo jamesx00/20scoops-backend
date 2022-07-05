@@ -52,3 +52,10 @@ Run below command to start the development server
 ```shell
 docker-compose up [-d]
 ```
+
+## Additional notes
+
+### Prisma
+
+`yarn add -D prisma` adds the prisma cli for development
+`yarn add @prisma/client` adds the prisma client
