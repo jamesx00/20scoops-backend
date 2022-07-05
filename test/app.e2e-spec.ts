@@ -108,8 +108,33 @@ describe('AppController (e2e)', () => {
         'Authorization',
         VALID_AUTHORIZATION_VALUE,
       )
-      .expect((response) =>
-        console.log(response.body),
+      .expect(400);
+  });
+
+  it('/POST users with valid Authorization header and without first name', () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({
+        identificationNumber: '0001',
+        lastName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users with valid Authorization header and without last name', () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({
+        identificationNumber: '0001',
+        firstName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
       )
       .expect(400);
   });
