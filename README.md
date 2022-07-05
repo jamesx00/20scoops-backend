@@ -44,3 +44,11 @@ User schema _\*required_
 - [ ] Build User schema.
 - [ ] Create a User module with CRUD controllers and services.
 - [ ] Write tests for user module
+
+## Getting started
+
+Run below command to start the development server
+
+```shell
+docker-compose up [-d]
+```
