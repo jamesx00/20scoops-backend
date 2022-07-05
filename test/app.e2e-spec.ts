@@ -184,6 +184,31 @@ describe('AppController (e2e)', () => {
       .expect(400);
   });
 
+  it('/POST users with valid Authorization header and duplicated identification number', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+    });
+    newUser.save();
+
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({
+        identificationNumber:
+          identificationNumber,
+        firstName: 'name',
+        lastName: '',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
   it('/PATCH users:identificationNumber without Authorization header', () => {
     return request(app.getHttpServer())
       .patch('/users/0001')
