@@ -296,6 +296,36 @@ describe('AppController (e2e)', () => {
       .expect(403);
   });
 
+  it('/PATCH users:identificationNumber with valid Authorization header and non-existing user', () => {
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
+  it('/PATCH users:identificationNumber with valid Authorization header and deleted user', () => {
+    const identificationNumber = '0001';
+
+    const newUser = userModel({
+      identificationNumber: identificationNumber,
+      firstName: 'Name',
+      lastName: 'Last name',
+      deleted: true,
+    });
+
+    newUser.save();
+    return request(app.getHttpServer())
+      .patch('/users/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
   it('/PATCH users:identificationNumber with valid Authorization header and valid value', () => {
     const identificationNumber = '0001';
 
