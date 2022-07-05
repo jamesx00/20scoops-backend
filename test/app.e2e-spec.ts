@@ -280,6 +280,112 @@ describe('AppController (e2e)', () => {
       );
   });
 
+  it('/POST users/yup with valid Authorization header and without identification number', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        firstName: 'name',
+        lastName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and without first name', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '0001',
+        lastName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and without last name', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '0001',
+        firstName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and empty identification number', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '',
+        firstName: 'name',
+        lastName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and empty first name', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '0001',
+        firstName: '',
+        lastName: 'name',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and empty last name', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '0001',
+        firstName: 'name',
+        lastName: '',
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(400);
+  });
+
+  it('/POST users/yup with valid Authorization header and strip attribute delete', () => {
+    return request(app.getHttpServer())
+      .post('/users/yup')
+      .send({
+        identificationNumber: '0001',
+        firstName: 'name',
+        lastName: 'lastname',
+        deleted: true,
+      })
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(
+        (response) =>
+          response.body.deleted == false,
+      );
+  });
+
   it('/PATCH users:identificationNumber without Authorization header', () => {
     return request(app.getHttpServer())
       .patch('/users/0001')
