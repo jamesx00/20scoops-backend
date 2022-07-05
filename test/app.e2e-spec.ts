@@ -293,6 +293,41 @@ describe('AppController (e2e)', () => {
       .expect(403);
   });
 
+  it('/DELETE users:identificationNumber with valid Authorization header and valid user', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .delete('/users/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(200);
+  });
+
+  it('/DELETE users:identificationNumber with valid Authorization header and deleted user', () => {
+    const user = userModel({
+      identificationNumber: '0001',
+      firstName: 'Name',
+      lastName: 'LastName',
+      deleted: true,
+    });
+    user.save();
+
+    return request(app.getHttpServer())
+      .delete('/users/0001')
+      .set(
+        'Authorization',
+        VALID_AUTHORIZATION_VALUE,
+      )
+      .expect(404);
+  });
+
   afterEach(async () => {
     await app.close();
   });
