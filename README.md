@@ -38,6 +38,12 @@ To stop the development server, run
 docker-compose down [-v] # Add -v to remove volumes attached to containers
 ```
 
+To run e2e tests, run
+
+```shell
+yarn test:e2e
+```
+
 ## Resources
 
 - [TypeScript Basic Syntax](https://www.tutorialspoint.com/typescript/typescript_basic_syntax.htm)
