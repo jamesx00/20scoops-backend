@@ -55,12 +55,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/GET users with existing users', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
-    });
-    user.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .get('/users')
@@ -71,13 +66,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/GET users with deleted users', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
-      deleted: true,
-    });
-    user.save();
+    createUser(userModel, { deleted: true });
 
     return request(app.getHttpServer())
       .get('/users')
@@ -86,12 +75,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/GET users:identificationNumber', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
-    });
-    user.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .get('/users/0001')
@@ -106,13 +90,11 @@ describe('AppController (e2e)', () => {
 
   it('/GET users:identificationNumber with deleted user', () => {
     const identificationNumber = '0001';
-    const user = userModel({
+    createUser(userModel, {
       identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'LastName',
       deleted: true,
     });
-    user.save();
+
     return request(app.getHttpServer())
       .get(`/users/${identificationNumber}`)
       .expect(404);
@@ -238,13 +220,9 @@ describe('AppController (e2e)', () => {
 
   it('/POST users with valid Authorization header and duplicated identification number', () => {
     const identificationNumber = '0001';
-
-    const newUser = userModel({
+    createUser(userModel, {
       identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
     });
-    newUser.save();
 
     return request(app.getHttpServer())
       .post('/users')
@@ -413,16 +391,8 @@ describe('AppController (e2e)', () => {
   });
 
   it('/PATCH users:identificationNumber with valid Authorization header and deleted user', () => {
-    const identificationNumber = '0001';
+    createUser(userModel, { deleted: true });
 
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-      deleted: true,
-    });
-
-    newUser.save();
     return request(app.getHttpServer())
       .patch('/users/0001')
       .set(
@@ -433,15 +403,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/PATCH users:identificationNumber with valid Authorization header and valid value', () => {
-    const identificationNumber = '0001';
-
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-    });
-
-    newUser.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .patch('/users/0001')
@@ -452,19 +414,16 @@ describe('AppController (e2e)', () => {
         'Authorization',
         VALID_AUTHORIZATION_VALUE,
       )
+      .expect(
+        (response) =>
+          response.body.firstNamae ==
+          'New First Name',
+      )
       .expect(200);
   });
 
   it('/PATCH users:identificationNumber with valid Authorization header and invalid value', () => {
-    const identificationNumber = '0001';
-
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-    });
-
-    newUser.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .patch('/users/0001')
@@ -479,15 +438,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/PATCH users:identificationNumber with valid Authorization header and identification number as data', () => {
-    const identificationNumber = '0001';
-
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-    });
-
-    newUser.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .patch('/users/0001')
@@ -506,15 +457,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/PATCH users:identificationNumber with valid Authorization header and deleted as data', () => {
-    const identificationNumber = '0001';
-
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-    });
-
-    newUser.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .patch('/users/0001')
@@ -532,15 +475,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/PATCH users:identificationNumber check dateUpdated change', () => {
-    const identificationNumber = '0001';
-
-    const newUser = userModel({
-      identificationNumber: identificationNumber,
-      firstName: 'Name',
-      lastName: 'Last name',
-    });
-
-    newUser.save();
+    const newUser = createUser(userModel);
     const originalUpdatedTime =
       newUser.dateUpdated;
 
@@ -577,12 +512,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/DELETE users:identificationNumber with valid Authorization header and valid user', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
-    });
-    user.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .delete('/users/0001')
@@ -604,13 +534,9 @@ describe('AppController (e2e)', () => {
   });
 
   it('/DELETE users:identificationNumber with valid Authorization header and deleted user', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
+    createUser(userModel, {
       deleted: true,
     });
-    user.save();
 
     return request(app.getHttpServer())
       .delete('/users/0001')
@@ -637,14 +563,10 @@ describe('AppController (e2e)', () => {
       .expect(403);
   });
 
-  it('/POST users/restore/:identificationNumber with valid Authorization header and valid user', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
+  it('/POST users/restore/:identificationNumber with valid Authorization header and deleted user', () => {
+    createUser(userModel, {
       deleted: true,
     });
-    user.save();
 
     return request(app.getHttpServer())
       .post('/users/restore/0001')
@@ -666,12 +588,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/POST users/restore/:identificationNumber with valid Authorization header and live user', () => {
-    const user = userModel({
-      identificationNumber: '0001',
-      firstName: 'Name',
-      lastName: 'LastName',
-    });
-    user.save();
+    createUser(userModel);
 
     return request(app.getHttpServer())
       .post('/users/restore/0001')
@@ -690,3 +607,24 @@ describe('AppController (e2e)', () => {
     await mongoose.connection.close();
   });
 });
+
+// Not sure what type of UserModel and the returned user is
+function createUser(
+  userModel,
+  data?: object,
+): any {
+  let userData = {
+    identificationNumber: '0001',
+    firstName: 'John',
+    lastName: 'Doe',
+  };
+
+  if (data == undefined) {
+    data = {};
+  }
+
+  userData = { ...userData, ...data };
+
+  const user = userModel({ ...userData });
+  return user.save();
+}
