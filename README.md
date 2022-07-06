@@ -26,6 +26,8 @@ This is a simple NestJS web application where clients can get, create, update, a
 
 ## Getting started
 
+To see API documentation, visit http://localhost:3000/api for details.
+
 Run below command to start the development server
 
 ```shell
